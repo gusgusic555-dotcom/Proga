@@ -333,7 +333,7 @@ function showView(v){
   const tab = v==='history' ? 'ex' : v;
   $$('.nav button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   curView=v;
-  window.scrollTo(0,0);
+  $('#scroller').scrollTop=0;
 }
 function go(tab){ showView(tab); refresh(); }
 function refresh(){
@@ -491,7 +491,7 @@ function saveRecord(){
 let wInterval=null, stopBusy=false;
 
 function onTimerBtn(){
-  if(DB.active.wId){ window.scrollTo({top:0,behavior:'smooth'}); toast('Тренировка уже идёт'); return; }
+  if(DB.active.wId){ $('#scroller').scrollTo({top:0,behavior:'smooth'}); toast('Тренировка уже идёт'); return; }
   startWorkout(false);
 }
 function startWorkout(silent){

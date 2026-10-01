@@ -10,11 +10,14 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   font-size:16px;overscroll-behavior-y:contain;-webkit-text-size-adjust:100%}
-/* В режиме «с экрана Домой» с прозрачной строкой состояния iOS считает высоту страницы
-   без строки состояния, и если страница не длиннее экрана, закреплённое нижнее меню
-   поднимается ровно на её высоту. Делаем страницу всегда выше экрана на эту величину. */
-html{background:var(--bg);min-height:calc(100% + var(--safe-top))}
-body{min-height:calc(100vh + var(--safe-top));padding-bottom:calc(var(--nav-h) + 24px + var(--safe-bottom))}
+/* Каркас приложения: сама страница не прокручивается, листается только .scroller,
+   а нижнее меню — обычный блок внизу колонки. Так iOS в режиме «с экрана Домой»
+   не может «приподнять» меню (это баг закреплённых элементов до первой прокрутки). */
+html,body{height:100%;overflow:hidden}
+html{background:var(--bg)}
+body{display:flex;flex-direction:column}
+.scroller{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding-bottom:24px}
 button{font-family:inherit;touch-action:manipulation}
 .btn,.chip,.icon-btn,.nav button,.seg button,.stepper button{-webkit-user-select:none;user-select:none}
 
@@ -250,7 +253,7 @@ body.flash .container{animation:flash 1.2s ease-out}
 
 /* ---------- нижнее меню ---------- */
 .nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:30;
+  position:relative;flex:none;z-index:30;
   background:rgba(18,21,27,.94);
   backdrop-filter:saturate(180%) blur(12px);
   -webkit-backdrop-filter:saturate(180%) blur(12px);
