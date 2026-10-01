@@ -50,7 +50,7 @@
 <section id="view-record" class="view">
   <header class="topbar">
     <div class="topbar-title">Запись</div>
-    <button class="icon-btn" id="btnTimer" data-act="timer-start" aria-label="Начать тренировку"><svg class="i" aria-hidden="true"><use href="#i-timer"></use></svg></button>
+    <button class="icon-btn" id="btnTimer" data-act="timer-start" aria-label="Начать тренировку"><svg class="i ic-timer" aria-hidden="true"><use href="#i-timer"></use></svg></button>
   </header>
 
   <main class="container">
@@ -91,17 +91,17 @@
         <div>
           <label for="mReps">Повторения</label>
           <div class="stepper">
-            <button type="button" data-act="step" data-for="mReps" data-d="-1"><svg class="i" aria-hidden="true"><use href="#i-minus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mReps" data-d="-1"><svg class="i ic-minus" aria-hidden="true"><use href="#i-minus"></use></svg></button>
             <input id="mReps" inputmode="decimal" placeholder="0" autocomplete="off">
-            <button type="button" data-act="step" data-for="mReps" data-d="1"><svg class="i" aria-hidden="true"><use href="#i-plus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mReps" data-d="1"><svg class="i ic-plus" aria-hidden="true"><use href="#i-plus"></use></svg></button>
           </div>
         </div>
         <div>
           <label for="mSets">Подходы</label>
           <div class="stepper">
-            <button type="button" data-act="step" data-for="mSets" data-d="-1"><svg class="i" aria-hidden="true"><use href="#i-minus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mSets" data-d="-1"><svg class="i ic-minus" aria-hidden="true"><use href="#i-minus"></use></svg></button>
             <input id="mSets" inputmode="decimal" placeholder="1" autocomplete="off">
-            <button type="button" data-act="step" data-for="mSets" data-d="1"><svg class="i" aria-hidden="true"><use href="#i-plus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mSets" data-d="1"><svg class="i ic-plus" aria-hidden="true"><use href="#i-plus"></use></svg></button>
           </div>
         </div>
       </div>
@@ -110,17 +110,17 @@
         <div>
           <label for="mWeight">Вес (кг)</label>
           <div class="stepper">
-            <button type="button" data-act="step" data-for="mWeight" data-d="-2.5"><svg class="i" aria-hidden="true"><use href="#i-minus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mWeight" data-d="-2.5"><svg class="i ic-minus" aria-hidden="true"><use href="#i-minus"></use></svg></button>
             <input id="mWeight" inputmode="decimal" placeholder="0" autocomplete="off">
-            <button type="button" data-act="step" data-for="mWeight" data-d="2.5"><svg class="i" aria-hidden="true"><use href="#i-plus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mWeight" data-d="2.5"><svg class="i ic-plus" aria-hidden="true"><use href="#i-plus"></use></svg></button>
           </div>
         </div>
         <div>
           <label for="mTime">Время (мин)</label>
           <div class="stepper">
-            <button type="button" data-act="step" data-for="mTime" data-d="-1"><svg class="i" aria-hidden="true"><use href="#i-minus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mTime" data-d="-1"><svg class="i ic-minus" aria-hidden="true"><use href="#i-minus"></use></svg></button>
             <input id="mTime" inputmode="decimal" placeholder="0" autocomplete="off">
-            <button type="button" data-act="step" data-for="mTime" data-d="1"><svg class="i" aria-hidden="true"><use href="#i-plus"></use></svg></button>
+            <button type="button" data-act="step" data-for="mTime" data-d="1"><svg class="i ic-plus" aria-hidden="true"><use href="#i-plus"></use></svg></button>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@
 
       <div class="form-actions">
         <button class="btn ghost" data-act="clear-form">Очистить</button>
-        <button class="btn ok" data-act="save"><svg class="i" aria-hidden="true"><use href="#i-save"></use></svg>Сохранить</button>
+        <button class="btn ok" data-act="save"><svg class="i ic-save" aria-hidden="true"><use href="#i-save"></use></svg>Сохранить</button>
       </div>
     </div>
 
@@ -138,7 +138,6 @@
       <div class="muted" style="margin:8px 2px 6px">Отдых:</div>
       <div class="chips">
         <div class="chip" data-act="rest" data-sec="60">1:00</div>
-        <div class="chip" data-act="rest" data-sec="90">1:30</div>
         <div class="chip" data-act="rest" data-sec="120">2:00</div>
         <div class="chip" data-act="rest" data-sec="180">3:00</div>
         <div class="chip" data-act="rest" data-sec="300">5:00</div>
@@ -154,7 +153,7 @@
 <section id="view-ex" class="view hidden">
   <header class="topbar">
     <div class="topbar-title">Упражнения</div>
-    <button class="icon-btn" data-act="ex-add" aria-label="Добавить упражнение"><svg class="i" aria-hidden="true"><use href="#i-plus"></use></svg></button>
+    <button class="icon-btn" data-act="ex-add" aria-label="Добавить упражнение"><svg class="i ic-plus" aria-hidden="true"><use href="#i-plus"></use></svg></button>
   </header>
   <main class="container">
     <input id="exSearch" class="search" type="search" placeholder="Поиск упражнения" autocomplete="off" autocorrect="off">
@@ -165,9 +164,9 @@
 <!-- ============ ЭКРАН ИСТОРИИ УПРАЖНЕНИЯ ============ -->
 <section id="view-history" class="view hidden">
   <header class="topbar">
-    <button class="icon-btn" data-act="hist-back" aria-label="Назад"><svg class="i" aria-hidden="true"><use href="#i-back"></use></svg></button>
+    <button class="icon-btn" data-act="hist-back" aria-label="Назад"><svg class="i ic-back" aria-hidden="true"><use href="#i-back"></use></svg></button>
     <div class="topbar-title" id="histTitle">История</div>
-    <button class="icon-btn" data-act="ex-menu" aria-label="Действия"><svg class="i" aria-hidden="true"><use href="#i-more"></use></svg></button>
+    <button class="icon-btn" data-act="ex-menu" aria-label="Действия"><svg class="i ic-more" aria-hidden="true"><use href="#i-more"></use></svg></button>
   </header>
   <main class="container">
     <div id="histList"></div>
@@ -178,12 +177,12 @@
 <section id="view-stats" class="view hidden">
   <header class="topbar">
     <div class="topbar-title">Статистика</div>
-    <button class="icon-btn" data-act="data" aria-label="Данные"><svg class="i" aria-hidden="true"><use href="#i-more"></use></svg></button>
+    <button class="icon-btn" data-act="data" aria-label="Данные"><svg class="i ic-more" aria-hidden="true"><use href="#i-more"></use></svg></button>
   </header>
   <main class="container">
     <div class="data-row">
-      <button class="btn ghost sm" data-act="export"><svg class="i" aria-hidden="true"><use href="#i-upload"></use></svg>Выгрузить</button>
-      <button class="btn ghost sm" data-act="import"><svg class="i" aria-hidden="true"><use href="#i-download"></use></svg>Загрузить</button>
+      <button class="btn ghost sm" data-act="export"><svg class="i ic-upload" aria-hidden="true"><use href="#i-upload"></use></svg>Выгрузить</button>
+      <button class="btn ghost sm" data-act="import"><svg class="i ic-download" aria-hidden="true"><use href="#i-download"></use></svg>Загрузить</button>
     </div>
     <div id="statsWarn"></div>
     <div id="statsTop"></div>
@@ -197,9 +196,9 @@
 
 <!-- ============ НИЖНЕЕ МЕНЮ ============ -->
 <nav class="nav">
-  <button data-act="tab" data-tab="record" class="active"><svg class="i ico" aria-hidden="true"><use href="#i-pen"></use></svg>Запись</button>
-  <button data-act="tab" data-tab="ex"><svg class="i ico" aria-hidden="true"><use href="#i-dumbbell"></use></svg>Упражнения</button>
-  <button data-act="tab" data-tab="stats"><svg class="i ico" aria-hidden="true"><use href="#i-chart"></use></svg>Статистика</button>
+  <button data-act="tab" data-tab="record" class="active"><svg class="i ic-pen ico" aria-hidden="true"><use href="#i-pen"></use></svg>Запись</button>
+  <button data-act="tab" data-tab="ex"><svg class="i ic-dumbbell ico" aria-hidden="true"><use href="#i-dumbbell"></use></svg>Упражнения</button>
+  <button data-act="tab" data-tab="stats"><svg class="i ic-chart ico" aria-hidden="true"><use href="#i-chart"></use></svg>Статистика</button>
 </nav>
 
 <div class="modal" id="modal">

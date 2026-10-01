@@ -277,7 +277,7 @@ function rxs(r){
 }
 
 /* ================== UI: иконки, сообщения, диалоги, модалка ================== */
-function I(name, cls){ return `<svg class="i${cls?' '+cls:''}" aria-hidden="true"><use href="#i-${name}"></use></svg>`; }
+function I(name, cls){ return `<svg class="i ic-${name}${cls?' '+cls:''}" aria-hidden="true"><use href="#i-${name}"></use></svg>`; }
 let toastTimer=null;
 function toast(msg, actLabel, actFn, ms, icon){
   const el=$('#toast');
@@ -804,8 +804,8 @@ function renderHistory(){
   const maxR=recs.reduce((m,r)=>Math.max(m,r.reps||0),0);
   let html=`<div class="stats-summary">
     <div class="stats-box"><div class="lbl">Записей</div><div class="val">${recs.length}</div></div>
-    <div class="stats-box"><div class="lbl">Макс. вес</div><div class="val">${maxW?fmtNum(maxW)+' кг':'—'}</div></div>
-    <div class="stats-box"><div class="lbl">Лучший тоннаж</div><div class="val">${maxT?fmtTon(maxT):'—'}</div></div>
+    <div class="stats-box"><div class="lbl">${I('trophy','sm')}Макс. вес</div><div class="val">${maxW?fmtNum(maxW)+' кг':'—'}</div></div>
+    <div class="stats-box"><div class="lbl">${I('dumbbell','sm')}Лучший тоннаж</div><div class="val">${maxT?fmtTon(maxT):'—'}</div></div>
     <div class="stats-box"><div class="lbl">Макс. повторов</div><div class="val">${maxR?fmtNum(maxR):'—'}</div></div>
   </div>`;
   html+=sparkline(recs);
@@ -944,9 +944,9 @@ function openWorkout(id){
   let html=`<div class="sheet-head"><h2>Тренировка #${workoutNumber(id)}</h2><button class="icon-btn" data-act="close-modal" aria-label="Закрыть">${I('x')}</button></div>
     <div class="muted" style="margin-bottom:12px">${WD[d.getDay()]}, ${fmtDate(w.start)} · ${fmtTime(w.start)}${isActive(w)?' · <span class="badge">идёт</span>':''}</div>
     <div class="stats-summary">
-      <div class="stats-box"><div class="lbl">Длительность</div><div class="val">${dur?fmtDur(dur):'—'}</div></div>
-      <div class="stats-box"><div class="lbl">Отдых</div><div class="val">${w.rest?fmtDur(w.rest):'—'}</div></div>
-      <div class="stats-box"><div class="lbl">Тоннаж</div><div class="val">${t?fmtTon(t):'—'}</div></div>
+      <div class="stats-box"><div class="lbl">${I('clock','sm')}Длительность</div><div class="val">${dur?fmtDur(dur):'—'}</div></div>
+      <div class="stats-box"><div class="lbl">${I('pause','sm')}Отдых</div><div class="val">${w.rest?fmtDur(w.rest):'—'}</div></div>
+      <div class="stats-box"><div class="lbl">${I('dumbbell','sm')}Тоннаж</div><div class="val">${t?fmtTon(t):'—'}</div></div>
       <div class="stats-box"><div class="lbl">Упражнений</div><div class="val">${order.length}</div></div>
     </div>`;
   html+=order.map(exId=>{
@@ -1036,8 +1036,8 @@ function renderStats(){
   top.innerHTML=`<div class="stats-summary">
     <div class="stats-box"><div class="lbl">Тренировок</div><div class="val">${ws.length}</div></div>
     <div class="stats-box"><div class="lbl">За 30 дней</div><div class="val">${month}</div></div>
-    <div class="stats-box"><div class="lbl">Средняя длит.</div><div class="val">${avg?fmtDur(avg):'—'}</div></div>
-    <div class="stats-box"><div class="lbl">Тоннаж всего</div><div class="val">${totalTon?fmtTon(totalTon):'—'}</div></div>
+    <div class="stats-box"><div class="lbl">${I('clock','sm')}Средняя длит.</div><div class="val">${avg?fmtDur(avg):'—'}</div></div>
+    <div class="stats-box"><div class="lbl">${I('dumbbell','sm')}Тоннаж всего</div><div class="val">${totalTon?fmtTon(totalTon):'—'}</div></div>
   </div>`;
   body.innerHTML = statsMode==='table' ? tableHtml(ws) : cardsHtml(ws);
 }
@@ -1087,7 +1087,7 @@ function tableHtml(ws){
     shown++;
     const d=new Date(w.start), dur=wDur(w), t=recs.reduce((a,r)=>a+ton(r),0);
     rows+=`<tr class="grp" data-act="w-open" data-id="${w.id}"><td colspan="4">
-      <b>${WD[d.getDay()]}, ${fmtDate(w.start)}</b> <span class="muted">· #${n} · ${fmtTime(w.start)}${dur?' · '+fmtDur(dur):''}${t?' · '+fmtTon(t):''}</span>
+      <b>${WD[d.getDay()]}, ${fmtDate(w.start)}</b> <span class="muted">· #${n} · ${fmtTime(w.start)}${dur?' · '+I('clock','sm')+fmtDur(dur):''}${w.rest?' · '+I('pause','sm')+fmtDur(w.rest):''}${t?' · '+I('dumbbell','sm')+fmtTon(t):''}</span>
     </td></tr>`;
     recs.forEach(r=>{
       const ex=exById(r.exId);
