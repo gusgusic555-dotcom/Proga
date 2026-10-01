@@ -7,6 +7,23 @@ const DB_KEY  = 'fitness_v4';
 const OLD_KEY = 'fitness_v3';
 const DAY = 864e5;
 
+/* Высота приложения. В режиме «с экрана Домой» iOS при прозрачной строке состояния
+   считает высоту страницы без неё, и нижнее меню оказывается приподнятым.
+   Поэтому там берём реальную высоту экрана, в остальных случаях — видимую область. */
+function fitApp(){
+  let h;
+  if(window.navigator.standalone){
+    const portrait = window.innerWidth <= window.innerHeight;
+    h = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
+  } else {
+    h = window.innerHeight;
+  }
+  document.documentElement.style.setProperty('--app-h', h+'px');
+}
+fitApp();
+window.addEventListener('resize', fitApp);
+window.addEventListener('orientationchange', ()=>setTimeout(fitApp, 300));
+
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 
