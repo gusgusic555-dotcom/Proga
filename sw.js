@@ -1,11 +1,33 @@
-/* Офлайн-кэш: приложение открывается без интернета после первого запуска.
-   При каждом изменении файлов увеличивайте VERSION — так обновление гарантированно подтянется. */
-const VERSION = 'v6';
-const FILES = ['./', './index.html', './style.css', './script.js', './manifest.webmanifest',
-               './icon-180.png', './icon-192.png', './icon-512.png'];
+/* Офлайн-кэш. Все файлы приложения хранятся ОДНИМ набором под именем VERSION и всегда
+   отдаются из него — HTML, CSS и JS гарантированно из одной версии, даже при плохой связи.
+   ВАЖНО: после любой правки файлов увеличьте версию в version.js — иначе телефон продолжит открывать старый набор.
+   Новый набор скачивается целиком (в обход HTTP-кэша GitHub Pages); если хоть один основной файл
+   не скачался — обновление отменяется и остаётся старая рабочая версия. */
+importScripts('./version.js');             // версия задаётся в version.js
+const VERSION = self.APP_VERSION;
+const CORE  = ['./', './index.html', './style.css', './version.js', './script.js', './manifest.webmanifest'];
+const EXTRA = ['./icon-180.png', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './favicon-32.png'];   // иконки — по возможности
+
+const fresh = url => fetch(new Request(url, { cache: 'no-cache' }));
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  e.waitUntil((async () => {
+    try {
+      // сначала скачиваем всё, и только потом кладём в кэш — набор либо полный, либо никакой
+      const got = await Promise.all(CORE.map(async u => {
+        const r = await fresh(u);
+        if (!r.ok) throw new Error(u + ' → ' + r.status);
+        return [u, r];
+      }));
+      const c = await caches.open(VERSION);
+      await Promise.all(got.map(([u, r]) => c.put(u, r)));
+      await Promise.all(EXTRA.map(u => fresh(u).then(r => r.ok ? c.put(u, r) : null).catch(() => {})));
+    } catch (err) {
+      await caches.delete(VERSION);
+      throw err;                       // установка не удалась — продолжает работать прежняя версия
+    }
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', e => {
@@ -16,23 +38,37 @@ self.addEventListener('activate', e => {
   );
 });
 
-// сначала сеть (чтобы правки сразу подхватывались).
-// Нет сети ИЛИ сайт отвечает ошибкой (404 — файлы удалены, 5xx — сбой) → берём из кэша.
-const fromCache = req => caches.match(req, { ignoreSearch: true })
-  .then(r => r || (req.mode === 'navigate' ? caches.match('./index.html') : undefined));
-
+// Файлы приложения — только из текущего набора; всё прочее — из сети без HTTP-кэша.
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  const same = new URL(e.request.url).origin === location.origin;
-  e.respondWith(
-    fetch(e.request)
-      .then(res => {
-        if (res.ok) {
-          if (same) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(e.request, copy)); }
-          return res;
-        }
-        return fromCache(e.request).then(r => r || res);
-      })
-      .catch(() => fromCache(e.request).then(r => r || Response.error()))
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  if (new URL(req.url).origin !== location.origin) return;
+
+  e.respondWith((async () => {
+    const c = await caches.open(VERSION);
+    let hit = await c.match(req, { ignoreSearch: true });
+    if (!hit && req.mode === 'navigate') hit = await c.match('./index.html');
+    if (hit) return hit;
+    try {
+      return await fetch(req.mode === 'navigate' ? req.url : req, { cache: 'no-cache' });
+    } catch (err) {
+      return Response.error();
+    }
+  })());
+});
+
+// страница спрашивает версию SW — так она узнаёт, что обновление уже скачано
+self.addEventListener('message', e => {
+  if (e.data === 'version' && e.ports && e.ports[0]) e.ports[0].postMessage(VERSION);
+});
+
+// нажатие на уведомление «Отдых окончен» — открыть приложение
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
+      if (cs.length) return cs[0].focus();
+      return self.clients.openWindow('./');
+    })
   );
 });
